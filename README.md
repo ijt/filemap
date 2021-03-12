@@ -1,7 +1,7 @@
 # filemap
 *Maps on the file system*
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ijt/filemap/CI?style=flat-square)](https://github.com/ijt/filemap/actions?query=workflow%3ACI)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ijt/filemap/Go?style=flat-square)](https://github.com/ijt/filemap/actions?query=workflow%3AGo)
 [![Go Report Card](https://goreportcard.com/badge/github.com/ijt/filemap?style=flat-square)](https://goreportcard.com/report/github.com/ijt/filemap)
 
 If you have a big map that's forcing you to run your Go program on an expensive instance with lots of RAM, filemap may be for you.
