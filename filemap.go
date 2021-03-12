@@ -25,7 +25,7 @@ type Map struct {
 	dir string
 }
 
-// MakeMap creates a filemap.Map using the given directory dir for storage.
+// New creates a filemap.Map using the given directory dir for storage.
 func New(dir string) *Map {
 	return &Map{dir: dir}
 }
