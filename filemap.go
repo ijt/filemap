@@ -120,13 +120,13 @@ func (m *Map) Range(f func(string, []byte) error) error {
 	return nil
 }
 
+func (m *Map) path(k string) string {
+	return filepath.Join(m.dir, encodeBase64(k))
+}
+
 func fileExists(path string) bool {
 	_, err := os.Stat(path)
 	return !os.IsNotExist(err)
-}
-
-func (m *Map) path(k string) string {
-	return filepath.Join(m.dir, encodeBase64(k))
 }
 
 func encodeBase64(s string) string {
