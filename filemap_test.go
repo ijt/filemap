@@ -2,17 +2,18 @@ package filemap_test
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
+	"io/ioutil"
 	"math/rand"
 	"testing"
 
 	"github.com/ijt/filemap"
+	"github.com/pkg/errors"
 	"golang.org/x/sync/errgroup"
 )
 
 func TestNumEntries(t *testing.T) {
-	fm, err := filemap.MakeMap()
+	fm, err := makeMap()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -38,7 +39,7 @@ func TestNumEntries(t *testing.T) {
 }
 
 func TestSetGet(t *testing.T) {
-	fm, err := filemap.MakeMap()
+	fm, err := makeMap()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -63,7 +64,7 @@ func TestSetGet(t *testing.T) {
 }
 
 func TestDel(t *testing.T) {
-	fm, err := filemap.MakeMap()
+	fm, err := makeMap()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -87,7 +88,7 @@ func TestDel(t *testing.T) {
 func TestRange(t *testing.T) {
 
 	t.Run("empty case", func(t *testing.T) {
-		fm, err := filemap.MakeMap()
+		fm, err := makeMap()
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -105,7 +106,7 @@ func TestRange(t *testing.T) {
 	})
 
 	t.Run("non-empty", func(t *testing.T) {
-		fm, err := filemap.MakeMap()
+		fm, err := makeMap()
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -129,7 +130,7 @@ func TestRange(t *testing.T) {
 	})
 
 	t.Run("error return", func(t *testing.T) {
-		fm, err := filemap.MakeMap()
+		fm, err := makeMap()
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -147,7 +148,7 @@ func TestRange(t *testing.T) {
 }
 
 func TestConcurrentAccess(t *testing.T) {
-	fm, err := filemap.MakeMap()
+	fm, err := makeMap()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -186,4 +187,12 @@ func makeKey() string {
 
 func makeVal() []byte {
 	return []byte(fmt.Sprintf("val-%d", rand.Int()))
+}
+
+func makeMap() (*filemap.Map, error) {
+	d, err := ioutil.TempDir("", "")
+	if err != nil {
+		return nil, errors.Wrap(err, "creating temporary directory")
+	}
+	return filemap.New(d), nil
 }

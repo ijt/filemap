@@ -25,13 +25,9 @@ type Map struct {
 	dir string
 }
 
-// MakeMap creates a filemap.Map.
-func MakeMap() (*Map, error) {
-	d, err := ioutil.TempDir("", "")
-	if err != nil {
-		return nil, errors.Wrap(err, "creating temporary directory")
-	}
-	return &Map{dir: d}, nil
+// MakeMap creates a filemap.Map using the given directory dir for storage.
+func New(dir string) *Map {
+	return &Map{dir: dir}
 }
 
 // Set sets an entry in the map for a given key k and value v.
