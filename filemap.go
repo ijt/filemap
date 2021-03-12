@@ -19,7 +19,7 @@ func (nf NotFound) Error() string {
 	return "filemap.NotFound"
 }
 
-// Map is a map that allows concurrent access.
+// Map associates keys with values, storing them in a directory on the filesystem.
 type Map struct {
 	mu  sync.Mutex
 	dir string
