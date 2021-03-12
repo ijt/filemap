@@ -156,7 +156,7 @@ func TestConcurrentAccess(t *testing.T) {
 	var eg errgroup.Group
 	for i := 0; i < 10; i++ {
 		eg.Go(func() error {
-			for j := 0; j < 1000; j++ {
+			for j := 0; j < 100; j++ {
 				k := makeKey()
 				v := makeVal()
 				if err := fm.Set(k, v); err != nil {
@@ -178,6 +178,42 @@ func TestConcurrentAccess(t *testing.T) {
 	}
 	if err := eg.Wait(); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func BenchmarkFilemap(b *testing.B) {
+	fm, err := makeMap()
+	if err != nil {
+		b.Fatal(err)
+	}
+	k := makeKey()
+	v := makeVal()
+	for n := 0; n < b.N; n++ {
+		if err := fm.Set(k, v); err != nil {
+			b.Fatal(err)
+		}
+		if _, err := fm.Get(k); err != nil {
+			b.Fatal(err)
+		}
+		if err := fm.Del(k); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+func BenchmarkNativeMap(b *testing.B) {
+	m := make(map[string][]byte)
+	k := makeKey()
+	v := makeVal()
+	for n := 0; n < b.N; n++ {
+		m[k] = v
+		_ = m[k]
+		delete(m, k)
+	}
+}
+
+func BenchmarkNoop(b *testing.B) {
+	for n := 0; n < b.N; n++ {
 	}
 }
 
